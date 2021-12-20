@@ -26,7 +26,7 @@ $bProceed = $true
 $sTimestamp = Get-Date -Format "yyyyMMddHHmmss"
 $sProgDataFldr = ($Env:ProgramData + "\ps_UpdateThisPath")
 $sLogFile = ($sProgDataFldr + "\Logs\" + (Get-Date -Format "yyyyMM") + "_INSERT-SCRIPT-NAME" + ".log")
-$sConfigFile = ($PSScriptRoot + "\ps_AD_UpdateServiceAccountCredentials.conf")
+$sConfigFile = ($PSScriptRoot + "\INSERT-CONFIG-NAME.conf")
 $arrConfigHeaders = @("mailfrom","mailto","mailsubject","smtpserver")
 $arrAlerts = @()
 
