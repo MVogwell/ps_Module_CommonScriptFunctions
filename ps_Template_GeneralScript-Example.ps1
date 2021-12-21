@@ -80,7 +80,7 @@ if ($bProceed -eq $true) {
 if ($bProceed -eq $true) {
 	# This object will contain the successfully returned config headers
 	$objConfig = New-Object -TypeName PSCustomObject
-	
+
 	$bProceed = Import-ConfigFile -sConfigFile $sConfigFile -objConfig ([ref]$objConfig) -arrConfigHeaders $arrConfigHeaders -sTimestamp $sTimestamp -sLogFile $sLogFile -arrAlerts ([ref]$arrAlerts)
 }
 
@@ -119,21 +119,22 @@ if ($bProceed -eq $true) {
 #@# Finished processing. Sending email alerts if required.
 if ($arrAlerts.Length -gt 0) {
 
-	$params_SendAlerts = @{
-		arrAlerts=$arrAlerts
-		objConfig=$objConfig
-		sEmailBodyHead=$sEmailBody
-		sTimestamp=$sTimestamp
-		sLogFile=$sLogFile
-	}
-
 	try {
-		# Check that the config data is available
+		# Check that the config data is available - this is required as the "to/from/server" details should be contained within it
 		if ($null -eq $objConfig) {
 			throw "No config data discovered - unable to send alert emails"
 		}
+		else {
+			$params_SendAlerts = @{
+				arrAlerts=$arrAlerts
+				objConfig=$objConfig
+				sEmailBodyHead=$sEmailBody
+				sTimestamp=$sTimestamp
+				sLogFile=$sLogFile
+			}
 
-		$null = Send-AlertEmails @params_SendAlerts
+			$null = Send-AlertEmails @params_SendAlerts
+		}
 	}
 	catch {
 		$sErrMsg = "Failed to call Send-AlertEmails. Error: " + (($Error[0].Exception.Message).toString()).replace("`r"," ").replace("`n"," ")
