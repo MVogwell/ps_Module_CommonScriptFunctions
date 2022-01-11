@@ -36,7 +36,7 @@ Function New-DataFolders() {
 
         Version history:
             0.1 - Development - pre testing - 20211204-1425
-
+            0.2 - Initial release (Beta)
     #>
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -71,7 +71,7 @@ Function New-DataFolders() {
                     Write-Information "`t`t+++ Successfully created folder"
                 }
                 else {	# The folder already exists
-                    Write-Information "`t`t--- Folder $sFolderPath already exists"
+                    Write-Information "`t--- Folder $sFolderPath already exists"
                 }
             }
         }

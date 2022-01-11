@@ -35,7 +35,7 @@ Function Import-PSModules() {
 
         Version history:
             0.1 - Development - pre testing - 20211204-2134
-
+            1.0 - Release version - 20220111-0933
     #>
 
     [CmdletBinding()]
@@ -45,7 +45,8 @@ Function Import-PSModules() {
         [Parameter(Mandatory=$true)][string[]]$arrModuleNames,
         [Parameter(Mandatory=$false)][string]$sTimestamp,
         [Parameter(Mandatory=$false)][string]$sLogFile,
-        [Parameter(Mandatory=$false)][ref]$arrAlerts
+        [Parameter(Mandatory=$false)][ref]$arrAlerts,
+        [Parameter(Mandatory=$false)][bool]$ShowVerbose
     )
 
     BEGIN {
@@ -71,7 +72,7 @@ Function Import-PSModules() {
             foreach ($sPSModule in $arrModuleNames) {
                 Write-Information "`t=== Module: $sPSModule"
 
-                Import-Module $sPSModule -Verbose:$false -WarningAction "SilentlyContinue"
+                Import-Module $sPSModule -WarningAction "SilentlyContinue" -Scope Global
 
                 # If the log file path has been specified in the parameters write the success log message
                 if (($PSBoundParameters).Keys -contains "sLogFile") {
