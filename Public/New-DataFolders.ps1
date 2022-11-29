@@ -37,6 +37,7 @@ Function New-DataFolders() {
         Version history:
             0.1 - Development - pre testing - 20211204-1425
             0.2 - Initial release (Beta)
+            0.3 - Added param bShowInfo to supress messages on screen
     #>
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -45,7 +46,8 @@ Function New-DataFolders() {
     param (
         [Parameter(Mandatory=$true)][string[]]$arrFolderPaths,
         [Parameter(Mandatory=$false)][ref]$arrAlerts,
-        [Parameter(Mandatory=$false)][string]$sTimestamp
+        [Parameter(Mandatory=$false)][string]$sTimestamp,
+        [Parameter(Mandatory=$false)][bool]$bShowInfo = $true
     )
 
     BEGIN {
@@ -53,8 +55,10 @@ Function New-DataFolders() {
 
         # Write-Information requires the preference needs to be
         # set to Continue to display the messages
-        $objInfoPref = $InformationPreference
-        $InformationPreference = "Continue"
+        if ($bShowInfo -eq $true) {
+            $objInfoPref = $InformationPreference
+            $InformationPreference = "Continue"
+        }
 
         $bRtn = $true
     }
@@ -104,7 +108,9 @@ Function New-DataFolders() {
         Write-Information " "
 
         # Reset the InformationPreference value
-        $InformationPreference = $objInfoPref
+        if ($bShowInfo -eq $true) {
+            $InformationPreference = $objInfoPref
+        }
 
         return $bRtn
     }

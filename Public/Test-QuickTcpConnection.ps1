@@ -1,4 +1,39 @@
+#Requires -Version 5.0
+
 Function Test-QuickTcpConnection () {
+    <#
+        .SYNOPSIS
+        This function is similar to the cmdlet Test-NetConnection but returns a result quicker. The timeout setting can also be configured.
+
+        .DESCRIPTION
+
+        .PARAMETER sComputerName
+        [Mandatory] This string parameter should specify the computer name (or IP address) to test
+
+        .PARAMETER iPort
+        [Mandatory] This integer parameter should specify the TCP port number to test
+
+        .PARAMETER iTimeoutMS
+        [Optional] This integer parameter should specify the number of milliseconds to wait before timing out. The default is 3500ms (3.5 seconds)
+
+        .EXAMPLE
+        $bResult = Test-QuickTcpConnection -sComputerName "127.0.0.1" -iPort 139
+
+        This will check whether TCP port 139 is on open on the local machine
+
+        .EXAMPLE
+        $bResult = Test-QuickTcpConnection -sComputerName "127.0.0.1" -iPort 139 -iTimeoutMS 10
+
+        This will check whether TCP port 139 is on open on the local machine which must respond in 10ms otherwise it will fail
+
+        .NOTES
+        MVogwell
+
+        Version history:
+            0.1 - Development
+            1.0 - Initial release
+    #>
+
 	[CmdletBinding()]
 	param (
 		[Parameter(Mandatory=$true)][string]$sComputerName,

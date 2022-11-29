@@ -40,7 +40,7 @@ Function Initialize-LogFile() {
         Version history:
             0.1 - Development - pre testing - 20211204-2134
             0.2 - Updated with option to manually specify the log file top line
-
+            0.3 - Added param bShowInfo to supress messages on screen
     #>
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -50,7 +50,8 @@ Function Initialize-LogFile() {
         [Parameter(Mandatory=$true)][string]$sTimestamp,
         [Parameter(Mandatory=$false)][switch]$DoNotWriteTopLine,
         [Parameter(Mandatory=$false)][string]$sTopLineText,
-        [Parameter(Mandatory=$false)][ref]$arrAlerts
+        [Parameter(Mandatory=$false)][ref]$arrAlerts,
+        [Parameter(Mandatory=$false)][bool]$bShowInfo = $true
     )
 
     BEGIN {
@@ -58,8 +59,10 @@ Function Initialize-LogFile() {
 
         # Write-Information requires the preference needs to be
         # set to Continue to display the messages
-        $objInfoPref = $InformationPreference
-        $InformationPreference = "Continue"
+        if ($bShowInfo -eq $true) {
+            $objInfoPref = $InformationPreference
+            $InformationPreference = "Continue"
+        }
 
         # Set the default return flag value
         $bRtn = $true
@@ -123,7 +126,9 @@ Function Initialize-LogFile() {
     }
     END {
         # Reset the InformationPreference value
-        $InformationPreference = $objInfoPref
+        if ($bShowInfo -eq $true) {
+            $InformationPreference = $objInfoPref
+        }
 
         return $bRtn
     }

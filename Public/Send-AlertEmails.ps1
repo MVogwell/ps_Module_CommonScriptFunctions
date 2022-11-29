@@ -21,7 +21,7 @@ Function Send-AlertEmails() {
         .PARAMETER objConfig
         Mandatory. This is a PowerShell object containing the following properies:
 
-        $objConfig = [PSCustomObject] @ {
+        $objConfig = [PSCustomObject] @{
             mailfrom = "sending-address@domain.com"
             mailto = "recipient-address@domain.com"
             mailSubject = "Mail Subject"
@@ -83,6 +83,8 @@ Function Send-AlertEmails() {
         Version history:
             0.1 - Development - pre testing - 20211204-2134
             1.0 - Production - Made the fields exportable to alerts customisable during runtime
+            1.1 - Set the warning action to SilentlyContinue for the send-mailmessage command. PS v7 displays a useless warning message
+            1.2 - Added param bShowInfo to supress messages on screen
     #>
 
     [CmdletBinding()]
@@ -94,7 +96,8 @@ Function Send-AlertEmails() {
         [Parameter(Mandatory=$false)][string[]]$arrAlertHeaders = @("Type","Result"),
         [Parameter(Mandatory=$false)][string]$sTimestamp,
         [Parameter(Mandatory=$false)][string]$sLogFile,
-        [Parameter(Mandatory=$false)][string]$sEmailHeader = "<meta name='robots' content='noindex'><style>table {  font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;  border-collapse: collapse;  width: 100%; font-size: 10px}td, tr {  border: 1px solid #ddd;  padding: 8px;}tr:nth-child(even){background-color: #f2f2f2;}tr:hover {background-color: #ddd;}th {  padding-top: 12px;  padding-bottom: 12px;  text-align: center;  background-color: #4CAF50;  color: white;}</style>"
+        [Parameter(Mandatory=$false)][string]$sEmailHeader = "<meta name='robots' content='noindex'><style>table {  font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;  border-collapse: collapse;  width: 100%; font-size: 10px}td, tr {  border: 1px solid #ddd;  padding: 8px;}tr:nth-child(even){background-color: #f2f2f2;}tr:hover {background-color: #ddd;}th {  padding-top: 12px;  padding-bottom: 12px;  text-align: center;  background-color: #4CAF50;  color: white;}</style>",
+        [Parameter(Mandatory=$false)][bool]$bShowInfo = $true
     )
 
     BEGIN {
@@ -102,8 +105,10 @@ Function Send-AlertEmails() {
 
         # Write-Information requires the preference needs to be
         # set to Continue to display the messages
-        $objInfoPref = $InformationPreference
-        $InformationPreference = "Continue"
+        if ($bShowInfo -eq $true) {
+            $objInfoPref = $InformationPreference
+            $InformationPreference = "Continue"
+        }
 
         # Set the default return flag value
         $bRtn = $true
@@ -127,6 +132,7 @@ Function Send-AlertEmails() {
                 BodyAsHtml = $true
                 Subject = $objConfig.mailSubject
                 ErrorAction = "Stop"
+                WarningAction = "SilentlyContinue"
             }
 
             Send-MailMessage @params_MailSend
@@ -155,8 +161,10 @@ Function Send-AlertEmails() {
         }
     }
     END {
-         # Reset the InformationPreference value
-        $InformationPreference = $objInfoPref
+        # Reset the InformationPreference value
+        if ($bShowInfo -eq $true) {
+            $InformationPreference = $objInfoPref
+        }
 
         return $bRtn
     }

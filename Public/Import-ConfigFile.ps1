@@ -60,7 +60,8 @@ Function Import-ConfigFile() {
 
         Version history:
             0.1 - Development - pre testing - 20211206-1205
-
+            0.2 - Release version
+            0.3 - Added param bShowInfo to supress messages on screen
     #>
 
     [CmdletBinding()]
@@ -71,7 +72,8 @@ Function Import-ConfigFile() {
         [Parameter(Mandatory=$false)][string[]]$arrConfigHeaders,
         [Parameter(Mandatory=$false)][string]$sTimestamp,
         [Parameter(Mandatory=$false)][string]$sLogFile,
-        [Parameter(Mandatory=$false)][ref]$arrAlerts
+        [Parameter(Mandatory=$false)][ref]$arrAlerts,
+        [Parameter(Mandatory=$false)][bool]$bShowInfo = $true
     )
 
     BEGIN {
@@ -79,8 +81,10 @@ Function Import-ConfigFile() {
 
         # Write-Information requires the preference needs to be
         # set to Continue to display the messages
-        $objInfoPref = $InformationPreference
-        $InformationPreference = "Continue"
+        if ($bShowInfo -eq $true) {
+            $objInfoPref = $InformationPreference
+            $InformationPreference = "Continue"
+        }
 
         # Set the default return flag value
         $bRtn = $true
@@ -152,7 +156,9 @@ Function Import-ConfigFile() {
     }
     END {
          # Reset the InformationPreference value
-        $InformationPreference = $objInfoPref
+        if ($bShowInfo -eq $true) {
+            $InformationPreference = $objInfoPref
+        }
 
         return $bRtn
     }

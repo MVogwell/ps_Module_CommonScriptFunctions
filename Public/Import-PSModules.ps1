@@ -36,6 +36,7 @@ Function Import-PSModules() {
         Version history:
             0.1 - Development - pre testing - 20211204-2134
             1.0 - Release version - 20220111-0933
+            1.1 - Added param bShowInfo to supress messages on screen
     #>
 
     [CmdletBinding()]
@@ -46,7 +47,8 @@ Function Import-PSModules() {
         [Parameter(Mandatory=$false)][string]$sTimestamp,
         [Parameter(Mandatory=$false)][string]$sLogFile,
         [Parameter(Mandatory=$false)][ref]$arrAlerts,
-        [Parameter(Mandatory=$false)][bool]$ShowVerbose
+        [Parameter(Mandatory=$false)][bool]$ShowVerbose,
+        [Parameter(Mandatory=$false)][bool]$bShowInfo = $true
     )
 
     BEGIN {
@@ -54,8 +56,10 @@ Function Import-PSModules() {
 
         # Write-Information requires the preference needs to be
         # set to Continue to display the messages
-        $objInfoPref = $InformationPreference
-        $InformationPreference = "Continue"
+        if ($bShowInfo -eq $true) {
+            $objInfoPref = $InformationPreference
+            $InformationPreference = "Continue"
+        }
 
         # Set the default return flag value
         $bRtn = $true
@@ -109,8 +113,10 @@ Function Import-PSModules() {
         }
     }
     END {
-         # Reset the InformationPreference value
-        $InformationPreference = $objInfoPref
+        # Reset the InformationPreference value
+        if ($bShowInfo -eq $true) {
+            $InformationPreference = $objInfoPref
+        }
 
         return $bRtn
     }
