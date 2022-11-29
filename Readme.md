@@ -13,23 +13,34 @@ The module provides the following cmdlets/functions:
 * Import-ConfigFile
     * This function will import a Json formatted config file and return the data as a PSCustomObject. If the config file fails to load or parse an alert can be returned that can be used by Send-AlertEmails and an error message can be created in a log file. <br><br>
 * Send-AlertEmails
-    * This function will attempt to send email alerts based on a provided config containing the mail send information as well as an array object containing PSCustomObjects. The alerts will be sent in HTML format CSS formatting on the table. If the alert email fails to send an error message can be saved to a log file. <br><br><br>
+    * This function will attempt to send email alerts based on a provided config containing the mail send information as well as an array object containing PSCustomObjects. The alerts will be sent in HTML format CSS formatting on the table. If the alert email fails to send an error message can be saved to a log file. <br><br>
+* Test-QuickTcpConnection
+	* This function is like the built-in cmdlet Test-NetConnection but quicker!<br><br><br>
 
 # Installing the module
 
-1) Create a new folder called "ps_Module_CommonScriptFunctions" in either:
-   * C:\Program Files\WindowsPowerShell\Modules\            <--- This will make the module accessible by all users
-   * %HOMEPATH%\Documents\WindowsPowerShell\Modules\        <--- This will make the module only accessible by the logged on user <br><br>
-2) Copy the files from the repository to this folder
+The published module is available at https://www.powershellgallery.com/packages/ps_Module_CommonScriptFunctions. To install the module run (in PowerShell):
+
+`Install-Module -Name ps_Module_CommonScriptFunctions`
+
+If you don't have administrative privileges to your machine you can run:
+
+`Install-Module -Name ps_Module_CommonScriptFunctions -Scope CurrentUser`
+
+If you don't have access to PowerShell gallery you can:
+* Download the script from the git repo https://github.com/MVogwell/ps_Module_CommonScriptFunctions
+* Place the extracted files into %USERPROFILE\Documents\PowerShell\Modules\ps_Module_CommonScriptFunctions
 
 <br><br>
 
-# How to use the module
+# How to use the module functions
 Included in the module folder is an example script file "ps_Template_GeneralScript-Example.ps1" which contains an example of using the script file. Additionally, each function has a in-file help which can be accessed using:
 
 `Import-Module ps_Module_CommonScriptFunctions`
 
 `help <command name>`
+
+Within the module is an example script template "ps_Template_GeneralScript-Example.ps1" and an example config file "ps_Template_GeneralScript-Example.conf" which show how the functions can be used and can be used to speed up development.
 
 <br><br>
 
